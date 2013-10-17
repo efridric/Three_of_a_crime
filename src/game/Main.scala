@@ -8,13 +8,12 @@
 
 package game
 
-import game.Player
+import scala.util.Random
 
 object Main {
   
   def main(args: Array[String]) {
-	 val p1 = new Player("eric", true)
-	 p1.guess
+    //TODO: Should be able to call GameLogic.startGame
+
   }
-  
 }
