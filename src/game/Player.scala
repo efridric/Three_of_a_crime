@@ -8,14 +8,14 @@ case class Player(name: String, var activeFlag: Boolean, guess: ListBuffer[Strin
   def startTurn = {
     println(name + " it is your turn!\nDo you want to guess who the perpetrators are (Yes/No)?: ")
     val answer = readLine()
-    if(answer.toLowerCase() == "yes"){guessList}
+    if(answer.toLowerCase() == "yes"){initiateGuess}
   }
   
   //Define a method for a player's guess may be easier to return some kind of hash/map rather than array
-  def guessList = {
+  def initiateGuess = {
     guess.clear()
     for( i <- 0 until 3 ){
-      guess += "Eric"//promptForGuess(i)
+      guess += promptForGuess(i)
     }
     guessFlag = true
   }
