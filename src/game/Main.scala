@@ -8,8 +8,6 @@
 
 package game
 
-import scala.util.Random
-
 object Main {
   
   def main(args: Array[String]) {

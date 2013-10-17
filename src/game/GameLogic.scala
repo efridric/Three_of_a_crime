@@ -59,7 +59,7 @@ object GameLogic {
 	def initializePlayers = {
 	  for(i <- players.indices){
 	    var name = promptForPlayer(i)
-	    players(i) = new Player(name,true,null,false)
+	    players(i) = new Player(name,true,new ListBuffer,false)
 	  }
 	}
 	
@@ -117,7 +117,7 @@ object GameLogic {
 	    return loser(turnCount)
 	  }
 	}
-    //a method for losing
+    //a method for losingr
 	def loser(turnCount: Int) : String = {
 	  players(turnCount%3).activeFlag = false
 	  return players(turnCount%3).name.toString() + " Your guess was incorrect you lose =[" 
