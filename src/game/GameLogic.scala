@@ -1,3 +1,5 @@
+package game
+
 object GameLogic {
 	//TODO: Define a method for starting a round
   

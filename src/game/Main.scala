@@ -5,7 +5,16 @@
  *  It is the job of the player to guess which 3 of the 7 criminals are the perpetrators, be careful though because if you guess wrong you are out. 
  * 
  */
-class Main {
-	//TODO: Initialize the players
-    //TODO: Start the game
+
+package game
+
+import game.Player
+
+object Main {
+  
+  def main(args: Array[String]) {
+	 val p1 = new Player("eric", true)
+	 p1.guess
+  }
+  
 }
