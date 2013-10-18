@@ -5,17 +5,20 @@ import scala.collection.mutable._
 
 object GameLogic {
 	
-	val winner = false
 	val players = new Array[Player](3)
 	val criminals = new Array[Criminal](7)
 	val currentCriminals = new ListBuffer[String]()
 	val perps = new ListBuffer[String]()
 	var perpCount = 0
+	var playersLeft = 3
+	var winner = false
 
 	//TODO: Define a method for starting the game
 	def startGame = {
 	  initializePlayers
 	  initializeCriminals
+	  //For debugging
+	  println("the perps(for testing) "+perps.mkString(" "))
 	  startRound(0)
 	}
   
@@ -23,20 +26,26 @@ object GameLogic {
 	def startRound(turnCount: Int) : Int = {
 	  val newCount = turnCount + 1
 	  
-	  if(!winner){
+	  if(!winner && playersLeft != 0){
 		  //New series of turns
 		  if(turnCount % 3 == 0){
 		    newCurrentCriminals
 		  }
 		  
 		  println(displayCurrentCriminals)
-		  startTurn(turnCount)
-		  if(checkForGuess(turnCount)){
-		    validateGuess(turnCount)
+		  if(isEligible(turnCount)) {
+		    players(turnCount%3).startTurn
+		    
+			  if(checkForGuess(turnCount)){
+			    println(validateGuess(turnCount))
+			  }
 		  }
 		  startRound(newCount)
 		
 	  }else{
+	    if(!winner){
+	      println("No one guessed correctly, You all lose =[\nGAME OVER!")
+	    }
 	    exit(0)
 	  }
 		  //Start a players turn
@@ -49,10 +58,11 @@ object GameLogic {
 	}
 	
 	//TODO: Start the players turn
-	def startTurn(turnCount: Int)  = {
+	def isEligible(turnCount: Int): Boolean = {
 	  	  if(players(turnCount%3).activeFlag){
-		  players(turnCount%3).startTurn
+		  return true
 	  }
+	  	  return false
 	  
 	}
 	//This method creates three Players with user inputed names
@@ -71,7 +81,7 @@ object GameLogic {
 	
 	//Creates seven Criminals. The Lists of names and status are randomly shuffled and used in the initialization of the Criminal
 	def initializeCriminals = {
-	  val name = Random.shuffle(List("Eric", "Tim", "Traivs", "Alex", "Sara", "Jack", "Jill"))
+	  val name = Random.shuffle(List("Eric", "Tim", "Travis", "Alex", "Sara", "Jack", "Jill"))
 	  val status = Random.shuffle(List(true, true, true, false, false, false, false))
 	  for(i <- criminals.indices){
 	    criminals(i) = new Criminal(name(i), status(i))
@@ -111,20 +121,26 @@ object GameLogic {
 	
 	def validateGuess(turnCount: Int) : String = {
 	  val guess = players(turnCount%3).guess
-	  if(guess.contains(currentCriminals)){
+	  if(lowerCaseSort(guess) == lowerCaseSort(perps)){
 	    return winner(turnCount)
 	  } else {
 	    return loser(turnCount)
 	  }
 	}
-    //a method for losingr
+    //a method for losing
 	def loser(turnCount: Int) : String = {
 	  players(turnCount%3).activeFlag = false
+	  playersLeft -= 1
 	  return players(turnCount%3).name.toString() + " Your guess was incorrect you lose =[" 
 	}
   
 	//a method for winning
 	def winner(turnCount: Int) : String = {
+	  winner = true
 	  return players(turnCount%3).name.toString() + " Your guess was correct you win!"
 	}
+	
+	def lowerCaseSort(list : ListBuffer[String]): ListBuffer[String] = {
+      list.map(m => m.toLowerCase()).sorted    
+    }
 }
