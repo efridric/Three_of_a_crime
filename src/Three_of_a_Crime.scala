@@ -1,10 +1,51 @@
-package game
+/**
+ *  Three of a crime is a simple logic game for up to 3 players. There are 7 different criminals.
+ *  The computer will randomly choose three of these 7 criminals to be the perpetrators.
+ *  At the start of each round the computer will provide the names of 3 criminals and state how many of those 3 if any are perpetrators.
+ *  It is the job of the player to guess which 3 of the 7 criminals are the perpetrators, be careful though because if you guess wrong you are out. 
+ * 
+ */
+
 
 import scala.util.Random
 import scala.collection.mutable._
 
-object GameLogic {
-	
+case class Criminal(name: String, status:Boolean) //Class for criminals
+case class Player(name: String, var activeFlag: Boolean, guess: ListBuffer[String], var guessFlag: Boolean) {
+    
+  //Function for a player's turn
+  def startTurn = {
+    println(name + " it is your turn!\nDo you want to guess who the perpetrators are (Yes/No)?: ")
+    val answer = readLine()
+    if(answer.toLowerCase() == "yes"){initiateGuess}
+  }
+  
+  //Function for a player's guess
+  def initiateGuess = {
+    guess.clear()
+    for( i <- 0 until 3 ){
+      guess += promptForGuess(i)
+    }
+    guessFlag = true
+  }
+  
+  //Returns the prompt for user guesses
+  def promptForGuess(i: Int) : String = {
+    val whichGuess = Array("first", "second", "third")
+    return readLine("Enter your " + whichGuess(i) + " guess: ").toLowerCase()
+  }
+   
+}
+
+object Main {
+  
+  def main(args: Array[String]) {
+	ThreeOfACrime.startGame
+  }
+}
+
+object ThreeOfACrime {
+  	
 	val players = new Array[Player](3)
 	val criminals = new Array[Criminal](7)
 	val currentCriminals = new ListBuffer[String]()
@@ -13,7 +54,7 @@ object GameLogic {
 	var playersLeft = 3
 	var winner = false
 
-	//TODO: Define a method for starting the game
+	//Starts the game
 	def startGame = {
 	  initializePlayers
 	  initializeCriminals
@@ -22,7 +63,7 @@ object GameLogic {
 	  startRound(0)
 	}
   
-	//TODO: Define a method for starting a round
+	//Starts the round
 	def startRound(turnCount: Int) : Int = {
 	  val newCount = turnCount + 1
 	  
@@ -47,17 +88,11 @@ object GameLogic {
 	      println("No one guessed correctly, You all lose =[\nGAME OVER!")
 	    }
 	    exit(0)
-	  }
-		  //Start a players turn
-		  //while winner is false
-		  //check guess flag
-		  //evaluate guess
-		  //go to next player
-	  
+	  }  
 	  return newCount
 	}
 	
-	//TODO: Start the players turn
+	//Starts a players turn
 	def isEligible(turnCount: Int): Boolean = {
 	  	  if(players(turnCount%3).activeFlag){
 		  return true
