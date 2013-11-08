@@ -6,7 +6,6 @@
  * 
  */
 
-
 import scala.util.Random
 import scala.collection.mutable._
 
@@ -34,18 +33,16 @@ case class Player(name: String, var activeFlag: Boolean, guess: ListBuffer[Strin
     val whichGuess = Array("first", "second", "third")
     return readLine("Enter your " + whichGuess(i) + " guess: ").toLowerCase()
   }
-   
 }
 
 object Main {
-  
   def main(args: Array[String]) {
 	ThreeOfACrime.startGame
   }
 }
 
 object ThreeOfACrime {
-  	
+
 	val players = new Array[Player](3)
 	val criminals = new Array[Criminal](7)
 	val currentCriminals = new ListBuffer[String]()
@@ -66,23 +63,19 @@ object ThreeOfACrime {
 	//Starts the round
 	def startRound(turnCount: Int) : Int = {
 	  val newCount = turnCount + 1
-	  
 	  if(!winner && playersLeft != 0){
 		  //New series of turns
 		  if(turnCount % 3 == 0){
 		    newCurrentCriminals
 		  }
-		  
 		  println(displayCurrentCriminals)
 		  if(isEligible(turnCount)) {
 		    players(turnCount%3).startTurn
-		    
-			  if(checkForGuess(turnCount)){
+		    if(checkForGuess(turnCount)){
 			    println(validateGuess(turnCount))
 			  }
 		  }
 		  startRound(newCount)
-		
 	  }else{
 	    if(!winner){
 	      println("No one guessed correctly, You all lose =[\nGAME OVER!")
@@ -95,11 +88,11 @@ object ThreeOfACrime {
 	//Starts a players turn
 	def isEligible(turnCount: Int): Boolean = {
 	  	  if(players(turnCount%3).activeFlag){
-		  return true
-	  }
+	  		  return true
+	  	  }
 	  	  return false
-	  
 	}
+	
 	//This method creates three Players with user inputed names
 	def initializePlayers = {
 	  for(i <- players.indices){
@@ -148,12 +141,12 @@ object ThreeOfACrime {
 	  return "Out of the criminals "+currentCriminals.mkString(", ")+" "+perpCount+" (is/are) perpetrators"
 	}
 	
-
     //Checks if the player made a guess or not
 	def checkForGuess(turnCount: Int) : Boolean = {
 	  return players(turnCount%3).guessFlag
 	}
 	
+	//Checks if a player guessed correctly or not
 	def validateGuess(turnCount: Int) : String = {
 	  val guess = players(turnCount%3).guess
 	  if(lowerCaseSort(guess) == lowerCaseSort(perps)){
@@ -162,6 +155,7 @@ object ThreeOfACrime {
 	    return loser(turnCount)
 	  }
 	}
+	
     //a method for losing
 	def loser(turnCount: Int) : String = {
 	  players(turnCount%3).activeFlag = false
@@ -175,6 +169,7 @@ object ThreeOfACrime {
 	  return players(turnCount%3).name.toString() + " Your guess was correct you win!"
 	}
 	
+	//converts a list to lowercase and then sorts it
 	def lowerCaseSort(list : ListBuffer[String]): ListBuffer[String] = {
       list.map(m => m.toLowerCase()).sorted    
     }
