@@ -1,4 +1,5 @@
 /**
+ * 	Author: Eric Fridrich
  *  Three of a crime is a simple logic game for up to 3 players. There are 7 different criminals.
  *  The computer will randomly choose three of these 7 criminals to be the perpetrators.
  *  At the start of each round the computer will provide the names of 3 criminals and state how many of those 3 if any are perpetrators.
@@ -35,6 +36,7 @@ case class Player(name: String, var activeFlag: Boolean, guess: ListBuffer[Strin
   }
 }
 
+//Starts the game
 object Main {
   def main(args: Array[String]) {
 	ThreeOfACrime.startGame
@@ -51,12 +53,12 @@ object ThreeOfACrime {
 	var playersLeft = 3
 	var winner = false
 
-	//Starts the game
+	//Sets up the game
 	def startGame = {
 	  initializePlayers
 	  initializeCriminals
 	  //For debugging
-	  println("the perps(for testing) "+perps.mkString(" "))
+	  //println("the perps(for testing) "+perps.mkString(" "))
 	  startRound(0)
 	}
   
